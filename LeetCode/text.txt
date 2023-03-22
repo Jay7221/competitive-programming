@@ -1,0 +1,3 @@
+Okay so basically what we have to do is to count number of substrings that form a palindrome. The first thing worth noting is that if you have a n length substring say aabbaa then you can always get a n - 2 length substring eg: aabbaa -> abba.
+So now we have basically have to find all substring centered at i, for each i = 0, 1, ..., n - 1. But the problem here is that substrings can be of even length too, in which case we don't have a center. So we transform the string as 	aabbaa -> #a#a#b#b#a#a#, so that all even length strings are centered at #. Now for each i, we find the maximum length palindrome centered at i, say k.
+If i is even we add k / 2 to ans, else we add (k + 1) / 2 to ans.

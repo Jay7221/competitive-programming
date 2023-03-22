@@ -1,0 +1,70 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define vl vector<ll>
+#define vll vector<vector<ll>>
+const ll MOD = 1e9 + 7;
+ll add(ll a, ll b){
+	return ((a + b) % MOD);
+}
+ll sub(ll a, ll b){
+	return ((((a - b) % MOD) + MOD) % MOD);
+}
+ll mult(ll a, ll b){
+	a %= MOD;
+	b %= MOD;
+	return ((a * b) % MOD);
+}
+ll power(ll a, int p){
+	ll ans = 1;
+	ll rem = a % MOD;
+	while(p > 0){
+		if(p & 1){
+			ans = mult(ans, rem);
+		}
+		p >>= 1;
+		rem = mult(rem, rem);
+	}
+	return ans;
+}
+ll add(vl v){
+	ll ans = 0;
+	for(ll elem : v){
+		ans = add(ans, elem);
+	}
+	return ans;
+}
+ll mult(vl v){
+	ll ans = 0;
+	for(ll elem : v){
+		ans = mult(ans, elem);
+	}
+	return ans;
+}
+ll rec(vll v){
+	ll ans = 0;
+	for(vl vv : v){
+		ans = add(ans, mult(vv));
+	}
+	return ans;
+}
+
+void solve(){
+	ll n, m, k;
+	cin >> n >> m >> k;
+	ll ans = divide(mult(n * m, n * m + 1), 2);
+	cout << ans << '\n';
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	int t;
+	cin >> t;
+	while(t--){
+		solve();
+	}
+
+	return 0;
+}
