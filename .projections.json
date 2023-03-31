@@ -1,0 +1,29 @@
+{
+	"*/A.cpp" : { 
+		"type" : "a",
+		"alternate" : "{}/inputf.in"
+	},
+	"*/B.cpp" : { 
+		"type" : "b",
+		"alternate" : "{}/inputf.in"
+	},
+	"*/C.cpp" : { 
+		"type" : "c",
+		"alternate" : "{}/inputf.in"
+	},
+	"*/D.cpp" : { 
+		"type" : "d",
+		"alternate" : "{}/inputf.in"
+	},
+	"*/E.cpp" : { 
+		"type" : "e",
+		"alternate" : "{}/inputf.in"
+	},
+	"*/F.cpp" : { 
+		"type" : "f",
+		"alternate" : "{}/inputf.in"
+	},
+	"*/inputf.in" : { "type" : "in" },
+	"*/outputf.out" : { "type" : "out" },
+	"*/" : {"type" : "contest" }
+}

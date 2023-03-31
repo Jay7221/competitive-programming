@@ -5,31 +5,38 @@ const ll INF = 1e15 + 7;
 void solve(){
 	int n, k;
 	cin >> n >> k;
-	vector<int> a(n), hot(k), cold(k);
-	vector<ll> dp(n, INF);
-	for(int i = 0; i < n; ++i){
+	vector<int> a(n + 1), hot(k + 1), cold(k + 1);
+	for(int i = 1; i <= n; ++i){
 		cin >> a[i];
-		--a[i];
 	}
-	for(int i = 0; i < k; ++i){
+	for(int i = 1; i <= k; ++i){
 		cin >> cold[i];
 	}
-	for(int i = 0; i < k; ++i){
+	for(int i = 1; i <= k; ++i){
 		cin >> hot[i];
 	}
-	dp[0] = cold[0];
-	for(int i = 1; i < n; ++i){
-		ll sum = 0;
-		for(int j = i - 1; j >= 0; --j){
-			dp[i] = min(dp[i], dp[j] + sum + (a[i] == a[j] ? hot[a[i]] : cold[a[i]]));
-			sum += cold[j];
+	vector<ll> dp(k + 1, INF);
+	dp[0] = 0;
+	for(int i = 1; i <= n; ++i){
+		vector<ll> ndp(k + 1, INF);
+		int x = a[i], y = a[i - 1];
+		if(x == y){
+			for(int i = 0; i <= k; ++i){
+				ndp[i] = min(ndp[i], dp[i] + hot[x]);
+				ndp[x] = min(ndp[x], dp[i] + cold[x]);
+			}
+			ndp[x] = min(ndp[x], dp[x] + hot[x]);
+		}else{
+			for(int i = 0; i <= k; ++i){
+				ndp[i] = min(ndp[i], dp[i] + cold[x]);
+				ndp[y] = min(ndp[y], dp[i] + cold[x]);
+			}
+			ndp[y] = min(ndp[y], dp[x] + hot[x]);
 		}
+		dp = ndp;
 	}
-	for(int i = 0; i < n; ++i){
-		cerr << dp[i] << ' ';
-	}
-	cerr << '\n';
-	cout << dp[n - 1] << '\n';
+	ll ans = *min_element(dp.begin(), dp.end());
+	cout << ans << '\n';
 }
 int main(){
 	ios_base::sync_with_stdio(false);
