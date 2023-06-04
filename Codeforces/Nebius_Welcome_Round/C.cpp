@@ -19,16 +19,25 @@ ll get(ll n, ll mod){
 	return n;
 }
 void solve(){
-	ll n, x, p;
-	cin >> n >> x >> p;
-	p = min(p, 4 * n);
-	for(ll f = 1; f <= p; ++f){
-		if(((get(f, n) + x) % n) == 0){
-			cout << "YES\n";
-			return ;
-		}
-	}
-	cout << "NO\n";
+    int n, x, p;
+    cin >> n >> x >> p;
+    bool flag = false;
+    for(int f = 1; f <= min(4 * n, p); ++f){
+        ll sum = f * 1ll * (f + 1);
+        sum /= 2;
+        sum %= n;
+        sum += x;
+        sum %= n;
+        if(sum == 0){
+            flag = true;
+            break;
+        }
+    }
+    if(flag){
+        cout << "Yes\n";
+    }else{
+        cout << "No\n";
+    }
 }
 int main(){
 	ios_base::sync_with_stdio(false);

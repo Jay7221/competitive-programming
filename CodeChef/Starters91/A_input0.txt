@@ -1,0 +1,9 @@
+4
+3
+AAA
+4
+BBBB
+5
+ABABB
+5
+BABAB
