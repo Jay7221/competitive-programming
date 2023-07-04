@@ -1,8 +1,5 @@
-for (( i = 0 ; i < 10000 ; ++ i ))
+for a in *
 do
-    if [ -d Round\ $i* ]
-    then
-        echo $i
-        mv Round\ $i* Round$i
-    fi
+    cp Contest "$a" -r
+    cp script.sh "$a" -r
 done
