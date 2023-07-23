@@ -1,5 +1,7 @@
-class ConvexHull{
-    class Point{
+#include<bits/stdc++.h>
+using namespace std;
+struct ConvexHull{
+    struct Point{
         double x, y;
     };
 
@@ -51,3 +53,6 @@ class ConvexHull{
         return st;
     }
 };
+int main(){
+    return 0;
+}
