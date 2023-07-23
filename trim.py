@@ -14,7 +14,8 @@ def trim(path):
     else:
         filename = os.path.basename(path)
         file_ext = os.path.splitext(filename)[1]
-        if  file_ext == '.out':
+        if  file_ext == '.out' or file_ext == '.txt':
+            print(f"Deleting file " + filename)
             os.remove(path)
         if isExecutable(path) and (file_ext == '.exe' or file_ext == ''):
             print("Deleting executable file : " + path)
