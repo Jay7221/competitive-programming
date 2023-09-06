@@ -27,35 +27,38 @@ mt19937 RNG(chrono::steady_clock::now().time_since_epoch().count());
 // Use mt19937_64 for 64 bit random numbers.
  
  
-const int N = 101;
+bool isPrime(int n){
+    if(n == 1){
+        return false;
+    }
+    for(int i = 2; i * i <= n; ++i){
+        if(n % i == 0){
+            return false;
+        }
+    }
+    return true;
+}
+
 void solve() {
     string s;
     cin >> s;
-    int n = s.size();
-    int m = (n + 1) * (n + 1);
-    vector<vector<int>> dp(n + 1, vector<int>(m));
-    vector<vector<int>> prev(n + 1, vector<int>(m));
-    for(int i = 0; i < n; ++i){
-
-        for(int j = 0; j <= i + 1; ++j){
-            for(int cnt = 0; cnt <= j * (i + 1 - j); ++cnt){
-                dp[j][cnt] = n;
+    int ans = -1;
+    for(int mask = 1; mask < (1 << 10); ++mask){
+        int num = 0;
+        int cnt = 0;
+        for(int k = 0; k < 10; ++k){
+            if(1 & (mask >> k)){
+                ++cnt;
+                num = 10 * num + (s[k] - '0');
             }
         }
-
-        for(int j = 0; j <= i; ++j){
-            for(int cnt = 0; cnt <= j * (i - j); ++cnt){
-                dp[j + 1][cnt] = min(dp[j + 1][cnt], prev[j][cnt] + (s[i] != '0'));
-                dp[j][cnt + j] = min(dp[j][cnt + j], prev[j][cnt] + (s[i] != '1'));
+        if(cnt >= 2){
+            if(isPrime(num)){
+                ans = num;
+                break;
             }
         }
-
-        swap(dp, prev);
     }
-    dp = prev;
-    int cnt0 = count(s.begin(), s.end(), '0');
-    int need = (cnt0 * (n - cnt0)) / 2;
-    int ans = dp[cnt0][need] / 2;
     cout << ans << '\n';
 }
  
@@ -63,9 +66,13 @@ int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
  
-    solve();
+    int tc;
+    cin >> tc;
+    for(int t = 1; t <= tc; ++t){
+//        cout << "# Case " << i << " : ";
+        solve();
+    }
     
     return 0;
 }
  
-

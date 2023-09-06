@@ -38,26 +38,70 @@ void solve() {
         --p;
         tree[p].push_back(i);
     }
+    auto subset_sum = [](vector<int> &weights, bitset<MAX> &p){
+        p[0] = true;
+        map<int, int> freq;
+        for(int w : weights){
+            ++freq[w];
+        }
+        vector<int> v;
+        for(auto [elem, f] : freq){
+            for(int i = 1; i <= f; i <<= 1){
+                v.push_back(i * elem);
+                f -= i;
+            }
+            if(f > 0){
+                v.push_back(f * elem);
+            }
+        }
+        for(int w : v){
+            p |= (p << w);
+        }
+    };
+    auto get = [&](vector<int> &a){
+        if(a.empty()){
+            return 0;
+        }
+        sort(a.rbegin(), a.rend());
+        ll cs = 0;
+        for(int x : a){
+            cs += x;
+        }
+        if(a[0] * 2 >= cs){
+            return a[0];
+        }
+
+        int n = a.size();
+        a.push_back(0);
+        int pi = 0;
+        for(int i = 1; i <= n; ++i){
+            if(a[i] != a[i - 1]){
+                ll cnt = i - pi;
+                ll x = a[i - 1];
+
+                ll j = 1; 
+                while(j < cnt){
+                }
+                b.push_back(x * cnt);
+            }
+        }
+    };
     vector<int> subtree_size(n, 1);
     function<void(int)> dfs;
     ll ans = 0;
     dfs = [&](int u){
-        bitset<MAX> p;
-        p[0] = true;
+
+        vector<int> a;
+
         for(int v : tree[u]){
             dfs(v);
             subtree_size[u] += subtree_size[v];
-            p |= (p << subtree_size[v]);
+            a.push_back(subtree_size[v]);
         }
+
         ll cur = 0;
-        int req = (subtree_size[u] - 1) / 2;
-        for(int i = req; i >= 0; --i){
-            if(p[i] || p[subtree_size[u] - 1 - i]){
-                cur = max(cur, i * 1ll * (subtree_size[u] - 1 - i));
-                break;
-            }
-        }        
-        ans += cur;
+        ll x = get(a);
+        ans += x * (subtree_size[u] - 1 - x);
     };
     dfs(0);
     cout << ans << '\n';
