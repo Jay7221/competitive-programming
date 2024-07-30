@@ -41,7 +41,8 @@ mt19937 RNG(chrono::steady_clock::now().time_since_epoch().count());
 #define SHUF(v) shuffle(all(v), RNG);
 // Use mt19937_64 for 64 bit random numbers.
 
-void solve() {}
+void solve() {
+}
 
 int main() {
   ios_base::sync_with_stdio(0);

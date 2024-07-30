@@ -1,0 +1,96 @@
+#include <bits/stdc++.h>
+ 
+using namespace std;
+ 
+//#pragma GCC optimize("Ofast,unroll-loops") 
+//#pragma GCC target("avx,avx2,avx512,fma") 
+ 
+template<typename A, typename B> ostream& operator<<(ostream &os, const pair<A, B> &p) { return os << '(' << p.first << ", " << p.second << ')'; }
+template<typename T_container, typename T = typename enable_if<!is_same<T_container, string>::value, typename T_container::value_type>::type> ostream& operator<<(ostream &os, const T_container &v) { os << '{'; string sep; for (const T &x : v) os << sep << x, sep = ", "; return os << '}'; }
+void dbg_out() { cerr << endl; }
+template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr << ' ' << H; dbg_out(T...); }
+#ifdef LOCAL
+#define dbg(...) cerr << "(" << #__VA_ARGS__ << "):", dbg_out(__VA_ARGS__)
+#else
+#define dbg(...)
+#endif
+ 
+#define ll long long
+#define ld long double
+ 
+#define PI 3.1415926535897932384626433832795l 
+
+// -------------------------<rng>------------------------- 
+// RANDOM NUMBER GENERATOR
+mt19937 RNG(chrono::steady_clock::now().time_since_epoch().count());  
+#define SHUF(v) shuffle(all(v), RNG); 
+// Use mt19937_64 for 64 bit random numbers.
+ 
+void solve() {
+    ll n, c;
+    cin >> n >> c;
+
+    vector<ll> a(n);
+    for(ll i = 0; i < n; ++i){
+        cin >> a[i];
+    }
+    a[0] += c;
+
+    vector<ll> pre = a;
+    for(ll i = 1; i < n; ++i){
+        pre[i] += pre[i - 1];
+    }
+
+    vector<ll> ans(n);
+    priority_queue<ll> pq;
+    pq.push(0);
+
+    for(ll i = n - 1; i >= 0; --i){
+        ans[i] = i;
+
+        vector<ll> tmp;
+        ll cur = pre[i];
+
+        while(cur < pq.top()){
+            cur += pq.top();
+            tmp.push_back(pq.top());
+            pq.pop();
+
+            ++ans[i];
+        }
+
+        for(ll elem: tmp){
+            pq.push(elem);
+        }
+        pq.push(a[i]);
+    }
+
+    ll mx = *max_element(a.begin(), a.end());
+    for(ll i = 0; i < n; ++i){
+        if(a[i] == mx){
+            ans[i] = 0;
+            break;
+        }
+    }
+
+
+    for(ll elem: ans){
+        cout << elem << ' ';
+    }
+    cout << '\n';
+}
+ 
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+ 
+    int tc;
+    cin >> tc;
+    for(int t = 1; t <= tc; ++t){
+//        cout << "# Case " << i << " : ";
+        solve();
+    }
+    
+    return 0;
+}
+ 
