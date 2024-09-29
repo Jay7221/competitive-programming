@@ -26,6 +26,42 @@ mt19937 RNG(chrono::steady_clock::now().time_since_epoch().count());
 #define SHUF(v) shuffle(all(v), RNG); 
 // Use mt19937_64 for 64 bit random numbers.
  
+
+typedef long long ftype;
+typedef complex<ftype> point;
+#define x real
+#define y imag
+
+ftype dot(point a, point b){
+    return (conj(a) * b).x();
+}
+
+ftype cross(point a, point b){
+    return (conj(a) * b).y();
+}
+
+vector<point> hull, vecs;
+
+void add_line(ftype k, ftype b){
+    point nw = {k, b};
+    while(!vecs.empty() && dot(vecs.back(), nw - hull.back()) < 0){
+        hull.pop_back();
+        vecs.pop_back();
+    }
+    if(!hull.empty()){
+        point i = {0, 1};
+        vecs.push_back(i * (nw - hull.back()));
+    }
+    hull.push_back(nw);
+}
+
+ll get(ftype x){
+    point query = {x, 1};
+    auto it = lower_bound(vecs.begin(), vecs.end(), query, [](point a, point b){
+                return cross(a, b) > 0;
+            });
+    return dot(query, hull[it - vecs.begin()]);
+}
  
 void solve() {
     int n;
@@ -36,36 +72,19 @@ void solve() {
     for(int i = 0; i < n; ++i){
         cin >> h[i];
     }
-
     vector<ll> dp(n);
     dp[0] = 0;
 
-    auto cost = [&](int i, int j){
-        return dp[i] + (h[j] - h[i]) * (h[j] - h[i]);
+    auto add_ind = [&](int i){
+        ll k = 2 * h[i];
+        ll b = dp[i] + h[i] * h[i];
+        add_line(k, b);
     };
 
+    add_ind(0);
     for(int i = 1; i < n; ++i){
-        int l = 0, r = i - 1;
-        while(l < r){
-            int m = (l + r) >> 1;
-            if(m + 1 <= r){
-                if(cost(m, i) > cost(m + 1, i)){
-                    l = m + 1;
-                }
-                else{
-                    r = m;
-                }
-            }
-            else{
-                if(cost(m - 1, i) > cost(m, i)){
-                    l = m;
-                }
-                else{
-                    r = m - 1;
-                }
-            }
-        }
-        dp[i] = c + cost(l, i);
+        dp[i] = c + h[i] * h[i] + get(-h[i]);
+        add_ind(i);
     }
 
     cout << dp[n - 1] << '\n';

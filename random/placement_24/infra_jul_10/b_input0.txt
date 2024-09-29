@@ -1,4 +1,0 @@
-3
-2
-Friend 1 2
-Total 2 3
